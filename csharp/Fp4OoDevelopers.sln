@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fp4OoDevelopers", "Fp4OoDevelopers\Fp4OoDevelopers.csproj", "{6F8DAB31-A1EC-4A94-BBE9-2185EE1727A2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fp4OoDevelopers.Tests", "Fp4OoDevelopers.Tests\Fp4OoDevelopers.Tests.csproj", "{03DE05E7-037E-431D-BD8B-96FF5DD149B9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F8DAB31-A1EC-4A94-BBE9-2185EE1727A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F8DAB31-A1EC-4A94-BBE9-2185EE1727A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F8DAB31-A1EC-4A94-BBE9-2185EE1727A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F8DAB31-A1EC-4A94-BBE9-2185EE1727A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03DE05E7-037E-431D-BD8B-96FF5DD149B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03DE05E7-037E-431D-BD8B-96FF5DD149B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03DE05E7-037E-431D-BD8B-96FF5DD149B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03DE05E7-037E-431D-BD8B-96FF5DD149B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C89C52A9-27BC-44CE-B89A-060A0F0825AD}
+	EndGlobalSection
+EndGlobal
