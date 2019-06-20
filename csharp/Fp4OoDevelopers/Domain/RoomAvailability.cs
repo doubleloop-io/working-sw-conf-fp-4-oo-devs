@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fp4OoDevelopers.Functional;
 using Newtonsoft.Json;
 
 namespace Fp4OoDevelopers.Domain
@@ -37,9 +38,7 @@ namespace Fp4OoDevelopers.Domain
             return true;
         }
 
-        public RoomAvailabilityBooking BookingFor(Guid customerId)
-        {
-            return bookingsByCustomerId.TryGetValue(customerId, out var ret) ? ret : null;
-        }
+        public Option<RoomAvailabilityBooking> BookingFor(Guid customerId) => 
+            Option<RoomAvailabilityBooking>.Pure(bookingsByCustomerId.TryGetValue(customerId, out var ret) ? ret : null);
     }
 }

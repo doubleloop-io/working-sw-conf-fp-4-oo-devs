@@ -1,4 +1,5 @@
 ﻿using Fp4OoDevelopers.Domain;
+using Fp4OoDevelopers.Functional;
 using Xunit;
 
 namespace Fp4OoDevelopers.Tests.Domain
@@ -26,7 +27,7 @@ namespace Fp4OoDevelopers.Tests.Domain
 
             Assert.False(result);
             Assert.Equal(0, availability.Quantity);
-            Assert.Null(availability.BookingFor(Ids.JonSnow));
+            Assert.Equal(None<RoomAvailabilityBooking>.Instance, availability.BookingFor(Ids.JonSnow));
         }
 
         [Fact]
