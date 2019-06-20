@@ -49,14 +49,9 @@ namespace Fp4OoDevelopers.Tests.Domain
                     store.Save(availability);
             }
 
-            public RoomAvailability LoadForRoom(Guid roomId)
+            public Option<RoomAvailability> LoadForRoom(Guid roomId)
             {
                 return store.LoadForRoom(roomId);
-            }
-
-            public Option<RoomAvailability> LoadForRoomOption(Guid roomId)
-            {
-                return store.LoadForRoomOption(roomId);
             }
 
             public void Save(RoomAvailability roomAvailability)

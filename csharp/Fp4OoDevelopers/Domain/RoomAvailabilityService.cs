@@ -13,7 +13,7 @@ namespace Fp4OoDevelopers.Domain
 
         public void Book(BookCommand command)
         {
-            roomAvailabilityStore.LoadForRoomOption(command.RoomId)
+            roomAvailabilityStore.LoadForRoom(command.RoomId)
                 .Map(roomAvailability =>
                 {
                     if (roomAvailability.Book(command.CustomerId, command.Quantity))

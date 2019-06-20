@@ -10,11 +10,8 @@ namespace Fp4OoDevelopers.Infrastructure
     {
         private readonly ConcurrentDictionary<Guid, string> roomAvailabilitiesByRoomId = new ConcurrentDictionary<Guid, string>();
 
-        public RoomAvailability LoadForRoom(Guid roomId) => 
-            roomAvailabilitiesByRoomId.TryGetValue(roomId, out var ret) ? Deserialize(ret) : null;
-
-        public Option<RoomAvailability> LoadForRoomOption(Guid roomId) =>
-            Option<RoomAvailability>.Pure(LoadForRoom(roomId));
+        public Option<RoomAvailability> LoadForRoom(Guid roomId) =>
+            Option<RoomAvailability>.Pure(roomAvailabilitiesByRoomId.TryGetValue(roomId, out var ret) ? Deserialize(ret) : null);
 
         public void Save(RoomAvailability roomAvailability)
         {

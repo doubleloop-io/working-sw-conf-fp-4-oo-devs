@@ -14,7 +14,7 @@ namespace Fp4OoDevelopers.Tests.Infrastructure
 
             store.Save(newAvailability);
 
-            var availability = store.LoadForRoomOption(Ids.AvailableRoom)
+            var availability = store.LoadForRoom(Ids.AvailableRoom)
                 .GetOrElse(newAvailability);
             Assert.Equal(0, newAvailability.Version);
             Assert.Equal(1, availability.Version);
@@ -27,7 +27,7 @@ namespace Fp4OoDevelopers.Tests.Infrastructure
             var store = new InMemoryRoomAvailabilityStore();
             var newAvailability = new RoomAvailability(Ids.AvailableRoom, 10);
             store.Save(newAvailability);
-            var availability = store.LoadForRoomOption(Ids.AvailableRoom)
+            var availability = store.LoadForRoom(Ids.AvailableRoom)
                 .GetOrElse(newAvailability);
             store.Save(availability);
 
