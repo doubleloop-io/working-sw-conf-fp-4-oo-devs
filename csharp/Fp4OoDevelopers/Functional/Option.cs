@@ -10,6 +10,8 @@ namespace Fp4OoDevelopers.Functional
         public abstract T GetOrElse(T @default);
 
         public abstract Option<TOut> Map<TOut>(Func<T, TOut> func);
+
+        public static implicit operator Option<T>(T value) => Pure(value);
     }
 
     public class Some<T> : Option<T> 

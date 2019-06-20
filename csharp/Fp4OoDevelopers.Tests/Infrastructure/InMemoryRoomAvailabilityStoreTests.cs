@@ -1,5 +1,6 @@
 ﻿using Fp4OoDevelopers.Domain;
 using Fp4OoDevelopers.Infrastructure;
+using System;
 using Xunit;
 
 namespace Fp4OoDevelopers.Tests.Infrastructure
@@ -32,6 +33,16 @@ namespace Fp4OoDevelopers.Tests.Infrastructure
             store.Save(availability);
 
             Assert.Throws<OptimisticLockException>(() => store.Save(availability));
+        }
+
+        [Fact]
+        public void MissingAvailability()
+        {
+            var store = new InMemoryRoomAvailabilityStore();
+
+            var option = store.LoadForRoom(Guid.NewGuid());
+
+            Assert.NotNull(option);
         }
     }
 }

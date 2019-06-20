@@ -11,7 +11,7 @@ namespace Fp4OoDevelopers.Infrastructure
         private readonly ConcurrentDictionary<Guid, string> roomAvailabilitiesByRoomId = new ConcurrentDictionary<Guid, string>();
 
         public Option<RoomAvailability> LoadForRoom(Guid roomId) =>
-            Option<RoomAvailability>.Pure(roomAvailabilitiesByRoomId.TryGetValue(roomId, out var ret) ? Deserialize(ret) : null);
+            roomAvailabilitiesByRoomId.TryGetValue(roomId, out var ret) ? Deserialize(ret) : null;
 
         public void Save(RoomAvailability roomAvailability)
         {
