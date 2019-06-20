@@ -2,16 +2,30 @@
 
 namespace Fp4OoDevelopers.Functional
 {
-    public abstract class Option<T>
+    public interface IOption
     {
+    }
+
+    public abstract class Option<T> : IOption
+    {
+        public static readonly Option<T> None = None<T>.Instance;
+
         public static Option<T> Pure(T value) =>
-            value == null ? (Option<T>)new None<T>() : new Some<T>(value);
+            value == null ? None<T>.Instance : new Some<T>(value);
 
         public abstract T GetOrElse(T @default);
 
         public abstract Option<TOut> Map<TOut>(Func<T, TOut> func);
 
         public static implicit operator Option<T>(T value) => Pure(value);
+
+        public static bool operator ==(Option<T> left, IOption right) => Equals(left, right);
+
+        public static bool operator !=(Option<T> left, IOption right) => !(left == right);
+
+        public static bool operator ==(IOption left, Option<T> right) => right == left;
+
+        public static bool operator !=(IOption left, Option<T> right) => right != left;
     }
 
     public class Some<T> : Option<T> 
@@ -39,7 +53,9 @@ namespace Fp4OoDevelopers.Functional
 
     public class None<T> : Option<T>
     {
-        public None()
+        public static readonly Option<T> Instance = new None<T>();
+
+        private None()
         {
         }
 
@@ -50,8 +66,9 @@ namespace Fp4OoDevelopers.Functional
             return new None<TOut>();
         }
 
-        public override bool Equals(object obj) =>
-            obj is None<T>;
+        public override bool Equals(object obj) => 
+            obj != null && obj.GetType().IsGenericType 
+                        && obj.GetType().GetGenericTypeDefinition() == typeof(None<>);
 
         public override int GetHashCode() => 0;
     }

@@ -18,7 +18,7 @@ namespace Fp4OoDevelopers.Tests.Functional
         {
             Option<string> result = Option<string>.Pure(null);
 
-            Assert.Equal(new None<string>(), result);
+            Assert.Equal(Option<string>.None, result);
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Fp4OoDevelopers.Tests.Functional
         [Fact]
         public void GetOrElseOfNone()
         {
-            Option<string> option = new None<string>();
+            Option<string> option = None<string>.Instance;
 
             string result = option.GetOrElse("missing value");
 
@@ -54,11 +54,18 @@ namespace Fp4OoDevelopers.Tests.Functional
         [Fact]
         public void MapOfNone()
         {
-            Option<string> option = new None<string>();
+            Option<string> option = Option<string>.None;
 
             Option<int> result = option.Map(str => str.Length);
 
-            Assert.Equal(new None<int>(), result);
+            Assert.Equal(Option<int>.None, result);
+        }
+
+        [Fact]
+        public void AllNoneAreEqual()
+        {
+            Assert.Equal(Option<string>.None, (IOption)Option<object>.None);
+            Assert.Equal(Option<string>.None, (IOption)Option<int>.None);
         }
     }
 }

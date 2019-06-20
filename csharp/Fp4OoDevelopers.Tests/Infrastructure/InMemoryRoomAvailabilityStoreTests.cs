@@ -2,6 +2,7 @@
 using Fp4OoDevelopers.Infrastructure;
 using System;
 using Xunit;
+using static Fp4OoDevelopers.Functional.Syntax;
 
 namespace Fp4OoDevelopers.Tests.Infrastructure
 {
@@ -42,7 +43,7 @@ namespace Fp4OoDevelopers.Tests.Infrastructure
 
             var option = store.LoadForRoom(Guid.NewGuid());
 
-            Assert.NotNull(option);
+            Assert.Equal(None, option);
         }
     }
 }
