@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Fp4OoDevelopers.Functional
 {
     public abstract class Either<TLeft, TRight>
     {
+        public abstract Either<TLeft, TOut> Map<TOut>(Func<TRight, TOut> func) where TOut : class;
+
         public static implicit operator Either<TLeft, TRight>(TLeft value) => new Left<TLeft, TRight>(value);
 
         public static implicit operator Either<TLeft, TRight>(TRight value) => new Right<TLeft, TRight>(value);
@@ -16,6 +19,11 @@ namespace Fp4OoDevelopers.Functional
         public Left(TLeft value)
         {
             this.value = value;
+        }
+
+        public override Either<TLeft, TOut> Map<TOut>(Func<TRight, TOut> func)
+        {
+            return value;
         }
 
         public override bool Equals(object obj) =>
@@ -32,6 +40,11 @@ namespace Fp4OoDevelopers.Functional
         public Right(TRight value)
         {
             this.value = value;
+        }
+
+        public override Either<TLeft, TOut> Map<TOut>(Func<TRight, TOut> func)
+        {
+            return func(value);
         }
 
         public override bool Equals(object obj) =>
