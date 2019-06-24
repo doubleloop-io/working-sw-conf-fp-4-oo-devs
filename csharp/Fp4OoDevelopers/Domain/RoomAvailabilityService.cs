@@ -14,6 +14,7 @@ namespace Fp4OoDevelopers.Domain
         public void Book(BookCommand command)
         {
             roomAvailabilityStore.LoadForRoom(command.RoomId)
+                .ToEither("Cannot find availability for required room")
                 .Map(roomAvailability =>
                 {
                     roomAvailability.Book(command.CustomerId, command.Quantity)
