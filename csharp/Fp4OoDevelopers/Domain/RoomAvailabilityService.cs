@@ -16,12 +16,13 @@ namespace Fp4OoDevelopers.Domain
             roomAvailabilityStore.LoadForRoom(command.RoomId)
                 .Map(roomAvailability =>
                 {
-                    if (roomAvailability.Book(command.CustomerId, command.Quantity))
-                    {
-                        roomAvailabilityStore.Save(roomAvailability);
-                    }
-
-                    return Unit;
+                    roomAvailability.BookEither(command.CustomerId, command.Quantity)
+                        .Map(_ =>
+                        {
+                            roomAvailabilityStore.Save(roomAvailability);
+                            return Unit;
+                        });
+		    return Unit;
                 });
         }
     }
