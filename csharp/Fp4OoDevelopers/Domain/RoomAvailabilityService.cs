@@ -1,4 +1,4 @@
-﻿using static Fp4OoDevelopers.Functional.Syntax;
+using static Fp4OoDevelopers.Functional.Syntax;
 
 namespace Fp4OoDevelopers.Domain
 {
@@ -23,7 +23,7 @@ namespace Fp4OoDevelopers.Domain
                             roomAvailabilityStore.Save(roomAvailability);
                             return Unit;
                         });
-		    return Unit;
+                    return Unit;
                 });
         }
     }
