@@ -40,9 +40,13 @@ namespace Fp4OoDevelopers.Domain
 
         public Either<string, Unit> BookEither(Guid customerId, int quantity)
         {
-            if (quantity > Quantity || bookingsByCustomerId.ContainsKey(customerId))
+            if (quantity > Quantity)
             {
-                return "ERROR";
+                return "Not enough availability";
+            }
+            if (bookingsByCustomerId.ContainsKey(customerId))
+            {
+                return "Customer already booked this property";
             }
             Quantity -= quantity;
             bookingsByCustomerId[customerId] = new RoomAvailabilityBooking(customerId, quantity);
