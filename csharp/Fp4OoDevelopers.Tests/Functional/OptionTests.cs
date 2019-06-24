@@ -40,5 +40,25 @@ namespace Fp4OoDevelopers.Tests.Functional
 
             Assert.Equal("missing value", result);
         }
+
+        [Fact]
+        public void MapOfSomething()
+        {
+            Option<string> option = new Some<string>("test");
+
+            Option<int> result = option.Map(str => str.Length);
+
+            Assert.Equal(new Some<int>(4), result);
+        }
+
+        [Fact]
+        public void MapOfNone()
+        {
+            Option<string> option = new None<string>();
+
+            Option<int> result = option.Map(str => str.Length);
+
+            Assert.Equal(new None<int>(), result);
+        }
     }
 }
