@@ -1,4 +1,6 @@
-﻿namespace Fp4OoDevelopers.Functional
+﻿using System.Collections.Generic;
+
+namespace Fp4OoDevelopers.Functional
 {
     public abstract class Either<TLeft, TRight>
     {
@@ -15,6 +17,12 @@
         {
             this.value = value;
         }
+
+        public override bool Equals(object obj) =>
+            obj is Left<TLeft, TRight> left && Equals(left.value, value);
+
+        public override int GetHashCode() =>
+            value.GetHashCode();
     }
 
     public class Right<TLeft, TRight> : Either<TLeft, TRight>
@@ -25,5 +33,11 @@
         {
             this.value = value;
         }
+
+        public override bool Equals(object obj) =>
+            obj is Right<TLeft, TRight> right && Equals(right.value, value);
+
+        public override int GetHashCode() =>
+            value.GetHashCode();
     }
 }
