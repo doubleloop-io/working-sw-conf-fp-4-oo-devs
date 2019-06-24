@@ -1,4 +1,4 @@
-using static Fp4OoDevelopers.Functional.Syntax;
+using Fp4OoDevelopers.Functional;
 
 namespace Fp4OoDevelopers.Domain
 {
@@ -15,16 +15,15 @@ namespace Fp4OoDevelopers.Domain
         {
             roomAvailabilityStore.LoadForRoom(command.RoomId)
                 .ToEither("Cannot find availability for required room")
+                .FlatMap(roomAvailability => Book(roomAvailability, command))
                 .Map(roomAvailability =>
                 {
-                    roomAvailability.Book(command.CustomerId, command.Quantity)
-                        .Map(_ =>
-                        {
-                            roomAvailabilityStore.Save(roomAvailability);
-                            return Unit;
-                        });
-                    return Unit;
+                    roomAvailabilityStore.Save(roomAvailability);
+                    return Syntax.Unit;
                 });
         }
+
+        private Either<string, RoomAvailability> Book(RoomAvailability roomAvailability, BookCommand command) =>
+            roomAvailability.Book(command.CustomerId, command.Quantity).Map(_ => roomAvailability);
     }
 }
