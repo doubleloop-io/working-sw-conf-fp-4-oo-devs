@@ -25,8 +25,10 @@ namespace Fp4OoDevelopers.Tests.Infrastructure
         public void OptimisticLock()
         {
             var store = new InMemoryRoomAvailabilityStore();
-            store.Save(new RoomAvailability(Ids.AvailableRoom, 10));
-            var availability = store.LoadForRoom(Ids.AvailableRoom);
+            var newAvailability = new RoomAvailability(Ids.AvailableRoom, 10);
+            store.Save(newAvailability);
+            var availability = store.LoadForRoomOption(Ids.AvailableRoom)
+                .GetOrElse(newAvailability);
             store.Save(availability);
 
             Assert.Throws<OptimisticLockException>(() => store.Save(availability));

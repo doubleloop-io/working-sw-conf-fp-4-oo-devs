@@ -1,4 +1,6 @@
-﻿namespace Fp4OoDevelopers.Domain
+﻿using Fp4OoDevelopers.Functional;
+
+namespace Fp4OoDevelopers.Domain
 {
     public class RoomAvailabilityService
     {
@@ -11,15 +13,16 @@
 
         public void Book(BookCommand command)
         {
-            var roomAvailability = roomAvailabilityStore.LoadForRoom(command.RoomId);
-
-            if (roomAvailability != null)
-            {
-                if (roomAvailability.Book(command.CustomerId, command.Quantity))
+            roomAvailabilityStore.LoadForRoomOption(command.RoomId)
+                .Map(roomAvailability =>
                 {
-                    roomAvailabilityStore.Save(roomAvailability);
-                }
-            }
+                    if (roomAvailability.Book(command.CustomerId, command.Quantity))
+                    {
+                        roomAvailabilityStore.Save(roomAvailability);
+                    }
+
+                    return Unit.Instance;
+                });
         }
     }
 }
