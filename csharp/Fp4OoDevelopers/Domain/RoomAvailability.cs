@@ -27,18 +27,7 @@ namespace Fp4OoDevelopers.Domain
         [JsonProperty]
         public int Version { get; private set; }
 
-        public bool Book(Guid customerId, int quantity)
-        {
-            if (quantity > Quantity || bookingsByCustomerId.ContainsKey(customerId))
-            {
-                return false;
-            }
-            Quantity -= quantity;
-            bookingsByCustomerId[customerId] = new RoomAvailabilityBooking(customerId, quantity);
-            return true;
-        }
-
-        public Either<string, Unit> BookEither(Guid customerId, int quantity)
+        public Either<string, Unit> Book(Guid customerId, int quantity)
         {
             if (quantity > Quantity)
             {

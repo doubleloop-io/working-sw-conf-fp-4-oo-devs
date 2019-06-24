@@ -16,7 +16,7 @@ namespace Fp4OoDevelopers.Domain
             roomAvailabilityStore.LoadForRoom(command.RoomId)
                 .Map(roomAvailability =>
                 {
-                    roomAvailability.BookEither(command.CustomerId, command.Quantity)
+                    roomAvailability.Book(command.CustomerId, command.Quantity)
                         .Map(_ =>
                         {
                             roomAvailabilityStore.Save(roomAvailability);

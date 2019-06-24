@@ -12,7 +12,7 @@ namespace Fp4OoDevelopers.Tests.Domain
         {
             var availability = new RoomAvailability(Ids.AvailableRoom, 10);
 
-            var result = availability.BookEither(Ids.JonSnow, 1);
+            var result = availability.Book(Ids.JonSnow, 1);
 
             Assert.Equal(Right<string, Unit>(Syntax.Unit), result);
             Assert.Equal(9, availability.Quantity);
@@ -24,7 +24,7 @@ namespace Fp4OoDevelopers.Tests.Domain
         {
             var availability = new RoomAvailability(Ids.NotAvailableRoom, 0);
 
-            var result = availability.BookEither(Ids.JonSnow, 1);
+            var result = availability.Book(Ids.JonSnow, 1);
 
             Assert.Equal(Left<string, Unit>("Not enough availability"), result);
             Assert.Equal(0, availability.Quantity);
@@ -35,9 +35,9 @@ namespace Fp4OoDevelopers.Tests.Domain
         public void CustomerAlreadyBook()
         {
             var availability = new RoomAvailability(Ids.AvailableRoom, 10);
-            availability.BookEither(Ids.JonSnow, 1);
+            availability.Book(Ids.JonSnow, 1);
 
-            var result = availability.BookEither(Ids.JonSnow, 2);
+            var result = availability.Book(Ids.JonSnow, 2);
 
             Assert.Equal(Left<string, Unit>("Customer already booked this property"), result);
             Assert.Equal(9, availability.Quantity);
