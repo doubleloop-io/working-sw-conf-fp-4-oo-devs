@@ -35,5 +35,25 @@ namespace Fp4OoDevelopers.Tests.Functional
 
             Assert.Equal(new Right<string, string>("42"), result);
         }
+
+        [Fact]
+        public void FlatMapOfLeft()
+        {
+            Either<string, int> either = new Left<string, int>("test");
+
+            Either<string, string> result = either.FlatMap(x => new Right<string, string>(x.ToString()));
+
+            Assert.Equal(new Left<string, string>("test"), result);
+        }
+
+        [Fact]
+        public void FlatMapOfRight()
+        {
+            Either<string, int> either = new Right<string, int>(42);
+
+            Assert.Equal(new Right<string, string>("42"), either.FlatMap(x => new Right<string, string>(x.ToString())));
+
+            Assert.Equal(new Left<string, string>("error"), either.FlatMap(x => new Left<string, string>("error")));
+        }
     }
 }
