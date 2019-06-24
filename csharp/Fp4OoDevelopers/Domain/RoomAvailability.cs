@@ -38,6 +38,17 @@ namespace Fp4OoDevelopers.Domain
             return true;
         }
 
+        public Either<string, Unit> BookEither(Guid customerId, int quantity)
+        {
+            if (quantity > Quantity || bookingsByCustomerId.ContainsKey(customerId))
+            {
+                return new Left<string, Unit>("ERROR");
+            }
+            Quantity -= quantity;
+            bookingsByCustomerId[customerId] = new RoomAvailabilityBooking(customerId, quantity);
+            return new Right<string, Unit>(Syntax.Unit);
+        }
+
         public Option<RoomAvailabilityBooking> BookingFor(Guid customerId) => 
             Option<RoomAvailabilityBooking>.Pure(bookingsByCustomerId.TryGetValue(customerId, out var ret) ? ret : null);
     }
