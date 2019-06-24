@@ -1,6 +1,7 @@
 ﻿using Fp4OoDevelopers.Domain;
 using Fp4OoDevelopers.Functional;
 using Xunit;
+using static Fp4OoDevelopers.Functional.Syntax;
 
 namespace Fp4OoDevelopers.Tests.Domain
 {
@@ -13,7 +14,7 @@ namespace Fp4OoDevelopers.Tests.Domain
 
             var result = availability.BookEither(Ids.JonSnow, 1);
 
-            Assert.Equal(new Right<string, Unit>(Syntax.Unit), result);
+            Assert.Equal(Right<string, Unit>(Syntax.Unit), result);
             Assert.Equal(9, availability.Quantity);
             Assert.Equal(new RoomAvailabilityBooking(Ids.JonSnow, 1), availability.BookingFor(Ids.JonSnow));
         }
@@ -25,7 +26,7 @@ namespace Fp4OoDevelopers.Tests.Domain
 
             var result = availability.BookEither(Ids.JonSnow, 1);
 
-            Assert.Equal(new Left<string, Unit>("ERROR"), result);
+            Assert.Equal(Left<string, Unit>("ERROR"), result);
             Assert.Equal(0, availability.Quantity);
             Assert.Equal(None<RoomAvailabilityBooking>.Instance, availability.BookingFor(Ids.JonSnow));
         }
@@ -38,7 +39,7 @@ namespace Fp4OoDevelopers.Tests.Domain
 
             var result = availability.BookEither(Ids.JonSnow, 2);
 
-            Assert.Equal(new Left<string, Unit>("ERROR"), result);
+            Assert.Equal(Left<string, Unit>("ERROR"), result);
             Assert.Equal(9, availability.Quantity);
             Assert.Equal(new RoomAvailabilityBooking(Ids.JonSnow, 1), availability.BookingFor(Ids.JonSnow));
         }
