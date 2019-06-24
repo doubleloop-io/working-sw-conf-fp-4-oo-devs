@@ -4,6 +4,8 @@
     {
         public static Option<T> Pure(T value) =>
             value == null ? (Option<T>)new None<T>() : new Some<T>(value);
+
+        public abstract T GetOrElse(T @default);
     }
 
     public class Some<T> : Option<T> 
@@ -14,6 +16,8 @@
         {
             this.value = value;
         }
+
+        public override T GetOrElse(T @default) => value;
 
         public override bool Equals(object obj) => 
             obj is Some<T> some && Equals(value, some.value);
@@ -27,6 +31,8 @@
         public None()
         {
         }
+
+        public override T GetOrElse(T @default) => @default;
 
         public override bool Equals(object obj) =>
             obj is None<T>;
