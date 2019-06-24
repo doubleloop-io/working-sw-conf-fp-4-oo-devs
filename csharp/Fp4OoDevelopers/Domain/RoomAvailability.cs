@@ -42,11 +42,11 @@ namespace Fp4OoDevelopers.Domain
         {
             if (quantity > Quantity || bookingsByCustomerId.ContainsKey(customerId))
             {
-                return new Left<string, Unit>("ERROR");
+                return "ERROR";
             }
             Quantity -= quantity;
             bookingsByCustomerId[customerId] = new RoomAvailabilityBooking(customerId, quantity);
-            return new Right<string, Unit>(Syntax.Unit);
+            return Syntax.Unit;
         }
 
         public Option<RoomAvailabilityBooking> BookingFor(Guid customerId) => 

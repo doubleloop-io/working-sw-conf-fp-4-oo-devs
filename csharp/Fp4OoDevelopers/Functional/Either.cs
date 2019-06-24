@@ -2,6 +2,9 @@
 {
     public abstract class Either<TLeft, TRight>
     {
+        public static implicit operator Either<TLeft, TRight>(TLeft value) => new Left<TLeft, TRight>(value);
+
+        public static implicit operator Either<TLeft, TRight>(TRight value) => new Right<TLeft, TRight>(value);
     }
 
     public class Left<TLeft, TRight> : Either<TLeft, TRight>
