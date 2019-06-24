@@ -1,4 +1,6 @@
-﻿namespace Fp4OoDevelopers.Functional
+﻿using System;
+
+namespace Fp4OoDevelopers.Functional
 {
     public abstract class Option<T>
     {
@@ -6,6 +8,8 @@
             value == null ? (Option<T>)new None<T>() : new Some<T>(value);
 
         public abstract T GetOrElse(T @default);
+
+        public abstract Option<TOut> Map<TOut>(Func<T, TOut> func);
     }
 
     public class Some<T> : Option<T> 
@@ -18,6 +22,11 @@
         }
 
         public override T GetOrElse(T @default) => value;
+
+        public override Option<TOut> Map<TOut>(Func<T, TOut> func)
+        {
+            return Option<TOut>.Pure(func(value));
+        }
 
         public override bool Equals(object obj) => 
             obj is Some<T> some && Equals(value, some.value);
@@ -33,6 +42,11 @@
         }
 
         public override T GetOrElse(T @default) => @default;
+
+        public override Option<TOut> Map<TOut>(Func<T, TOut> func)
+        {
+            return new None<TOut>();
+        }
 
         public override bool Equals(object obj) =>
             obj is None<T>;
