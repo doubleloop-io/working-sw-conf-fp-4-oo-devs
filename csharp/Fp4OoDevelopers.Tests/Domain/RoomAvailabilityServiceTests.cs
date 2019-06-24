@@ -1,5 +1,6 @@
 using System;
 using Fp4OoDevelopers.Domain;
+using Fp4OoDevelopers.Functional;
 using Fp4OoDevelopers.Infrastructure;
 using Xunit;
 
@@ -51,6 +52,11 @@ namespace Fp4OoDevelopers.Tests.Domain
             public RoomAvailability LoadForRoom(Guid roomId)
             {
                 return store.LoadForRoom(roomId);
+            }
+
+            public Option<RoomAvailability> LoadForRoomOption(Guid roomId)
+            {
+                return store.LoadForRoomOption(roomId);
             }
 
             public void Save(RoomAvailability roomAvailability)

@@ -1,10 +1,12 @@
 ﻿using System;
+using Fp4OoDevelopers.Functional;
 
 namespace Fp4OoDevelopers.Domain
 {
     public interface IRoomAvailabilityStore
     {
         RoomAvailability LoadForRoom(Guid roomId);
+        Option<RoomAvailability> LoadForRoomOption(Guid roomId);
         void Save(RoomAvailability roomAvailability);
     }
 

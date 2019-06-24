@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
+using Fp4OoDevelopers.Functional;
 
 namespace Fp4OoDevelopers.Infrastructure
 {
@@ -11,6 +12,9 @@ namespace Fp4OoDevelopers.Infrastructure
 
         public RoomAvailability LoadForRoom(Guid roomId) => 
             roomAvailabilitiesByRoomId.TryGetValue(roomId, out var ret) ? Deserialize(ret) : null;
+
+        public Option<RoomAvailability> LoadForRoomOption(Guid roomId) =>
+            Option<RoomAvailability>.Pure(LoadForRoom(roomId));
 
         public void Save(RoomAvailability roomAvailability)
         {
