@@ -20,5 +20,25 @@ namespace Fp4OoDevelopers.Tests.Functional
 
             Assert.Equal(new None<string>(), result);
         }
+
+        [Fact]
+        public void GetOrElseOfSomething()
+        {
+            Option<string> option = new Some<string>("test");
+
+            string result = option.GetOrElse("missing value");
+
+            Assert.Equal("test", result);
+        }
+
+        [Fact]
+        public void GetOrElseOfNone()
+        {
+            Option<string> option = new None<string>();
+
+            string result = option.GetOrElse("missing value");
+
+            Assert.Equal("missing value", result);
+        }
     }
 }
