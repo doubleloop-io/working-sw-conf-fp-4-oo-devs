@@ -61,6 +61,18 @@ namespace Fp4OoDevelopers.Tests.Domain
                 store.Save(roomAvailability);
                 Saved = roomAvailability;
             }
+
+            public Either<string, Unit> SaveEither(RoomAvailability roomAvailability)
+            {
+                if (roomAvailability.RoomId == Ids.OptimisticLockRoom)
+                    return "Optimistic lock";
+                return store.SaveEither(roomAvailability)
+                    .Map(_ =>
+                    {
+                        Saved = roomAvailability;
+                        return _;
+                    });
+            }
         }
     }
 }

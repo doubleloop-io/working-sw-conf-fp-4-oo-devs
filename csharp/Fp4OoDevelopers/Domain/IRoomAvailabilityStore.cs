@@ -7,6 +7,7 @@ namespace Fp4OoDevelopers.Domain
     {
         Option<RoomAvailability> LoadForRoom(Guid roomId);
         void Save(RoomAvailability roomAvailability);
+        Either<string, Unit> SaveEither(RoomAvailability roomAvailability);
     }
 
     public class OptimisticLockException : Exception
