@@ -1,6 +1,7 @@
 ﻿using Fp4OoDevelopers.Domain;
 using Fp4OoDevelopers.Infrastructure;
 using System;
+using Fp4OoDevelopers.Functional;
 using Xunit;
 using static Fp4OoDevelopers.Functional.Syntax;
 
@@ -14,12 +15,15 @@ namespace Fp4OoDevelopers.Tests.Infrastructure
             var store = new InMemoryRoomAvailabilityStore();
             var newAvailability = new RoomAvailability(Ids.AvailableRoom, 10);
 
-            store.Save(newAvailability);
-
-            var availability = store.LoadForRoom(Ids.AvailableRoom)
-                .GetOrElse(newAvailability);
-            Assert.Equal(0, newAvailability.Version);
-            Assert.Equal(1, availability.Version);
+            var result = store.SaveEither(newAvailability)
+                .FlatMap(_ => store.LoadForRoom(Ids.AvailableRoom).ToEither("Not found"))
+                .Map(availability =>
+                {
+                    Assert.Equal(0, newAvailability.Version);
+                    Assert.Equal(1, availability.Version);
+                    return Syntax.Unit;
+                });
+            Assert.Equal(Right<string, Unit>(Syntax.Unit), result);
         }
 
 
@@ -28,12 +32,14 @@ namespace Fp4OoDevelopers.Tests.Infrastructure
         {
             var store = new InMemoryRoomAvailabilityStore();
             var newAvailability = new RoomAvailability(Ids.AvailableRoom, 10);
-            store.Save(newAvailability);
-            var availability = store.LoadForRoom(Ids.AvailableRoom)
-                .GetOrElse(newAvailability);
-            store.Save(availability);
 
-            Assert.Throws<OptimisticLockException>(() => store.Save(availability));
+            var result = store.SaveEither(newAvailability)
+                .FlatMap(_ => store.LoadForRoom(Ids.AvailableRoom).ToEither("Not found"))
+                .FlatMap(availability => store.SaveEither(availability).Map(_ => availability))
+                .FlatMap(availability => store.SaveEither(availability))
+                .Map(_ => Syntax.Unit);
+
+            Assert.StartsWith("Cannot save", result.Match(x => x, _ => ""));
         }
 
         [Fact]

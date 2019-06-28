@@ -46,7 +46,7 @@ namespace Fp4OoDevelopers.Tests.Domain
             {
                 store = new InMemoryRoomAvailabilityStore();
                 foreach (var availability in availabilities)
-                    store.Save(availability);
+                    store.SaveEither(availability);
             }
 
             public Option<RoomAvailability> LoadForRoom(Guid roomId)
