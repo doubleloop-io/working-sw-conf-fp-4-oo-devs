@@ -17,6 +17,10 @@ namespace Fp4OoDevelopers.Functional
 
         public abstract Option<TOut> Map<TOut>(Func<T, TOut> func);
 
+        public Either<TLeft, T> ToEither<TLeft>(TLeft left) =>
+            Map(right => Syntax.Right<TLeft, T>(right))
+                .GetOrElse(Syntax.Left<TLeft, T>(left));
+
         public static implicit operator Option<T>(T value) => Pure(value);
 
         public static bool operator ==(Option<T> left, IOption right) => Equals(left, right);
