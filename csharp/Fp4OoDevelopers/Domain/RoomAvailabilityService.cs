@@ -16,11 +16,8 @@ namespace Fp4OoDevelopers.Domain
             roomAvailabilityStore.LoadForRoom(command.RoomId)
                 .ToEither("Cannot find availability for required room")
                 .FlatMap(roomAvailability => Book(roomAvailability, command))
-                .Map(roomAvailability =>
-                {
-                    roomAvailabilityStore.Save(roomAvailability);
-                    return Syntax.Unit;
-                });
+                .FlatMap(roomAvailability => roomAvailabilityStore.SaveEither(roomAvailability))
+                .Match(error => throw new OptimisticLockException(error), x => x);
         }
 
         private Either<string, RoomAvailability> Book(RoomAvailability roomAvailability, BookCommand command) =>
