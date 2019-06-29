@@ -9,7 +9,7 @@ namespace Fp4OoDevelopers.Domain
     public class RoomAvailability
     {
         [JsonProperty]
-        private readonly Dictionary<Guid, RoomAvailabilityBooking> bookingsByCustomerId = new Dictionary<Guid, RoomAvailabilityBooking>();
+        private readonly IReadOnlyDictionary<Guid, RoomAvailabilityBooking> bookingsByCustomerId = new Dictionary<Guid, RoomAvailabilityBooking>();
 
         public RoomAvailability(Guid roomId, int quantity)
         {
