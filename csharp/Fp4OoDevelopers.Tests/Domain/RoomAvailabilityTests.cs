@@ -20,6 +20,22 @@ namespace Fp4OoDevelopers.Tests.Domain
         }
 
         [Fact]
+        public void SuccessfulBookingImmutable()
+        {
+            var availability = new RoomAvailability(Ids.AvailableRoom, 10);
+
+            var result = availability.BookImmutable(Ids.JonSnow, 1)
+                .Map(x =>
+                {
+                    Assert.Equal(9, x.Quantity);
+                    Assert.Equal(new RoomAvailabilityBooking(Ids.JonSnow, 1), x.BookingFor(Ids.JonSnow));
+                    return Syntax.Unit;
+                });
+            Assert.Equal(Right<string, Unit>(Syntax.Unit), result);
+            Assert.Equal(10, availability.Quantity);
+        }
+
+        [Fact]
         public void NoAvailability()
         {
             var availability = new RoomAvailability(Ids.NotAvailableRoom, 0);
