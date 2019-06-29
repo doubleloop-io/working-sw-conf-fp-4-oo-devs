@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fp4OoDevelopers.Functional;
 using Newtonsoft.Json;
 
@@ -16,6 +17,15 @@ namespace Fp4OoDevelopers.Domain
             RoomId = roomId;
             Quantity = quantity;
             Version = 0;
+        }
+
+        private RoomAvailability(Guid id, Guid roomId, int quantity, IEnumerable<RoomAvailabilityBooking> bookings, int version)
+        {
+            Id = id;
+            RoomId = roomId;
+            Quantity = quantity;
+            Version = version;
+            bookingsByCustomerId = bookings.ToDictionary(x => x.CustomerId, x => x);
         }
 
         [JsonProperty]
@@ -40,6 +50,24 @@ namespace Fp4OoDevelopers.Domain
             Quantity -= quantity;
             bookingsByCustomerId[customerId] = new RoomAvailabilityBooking(customerId, quantity);
             return Syntax.Unit;
+        }
+
+        public Either<string, RoomAvailability> BookImmutable(Guid customerId, int quantity)
+        {
+            if (quantity > Quantity)
+            {
+                return "Not enough availability";
+            }
+            if (bookingsByCustomerId.ContainsKey(customerId))
+            {
+                return "Customer already booked this property";
+            }
+            return new RoomAvailability(
+                Id,
+                RoomId,
+                Quantity - quantity,
+                bookingsByCustomerId.Values.Union(new[] {new RoomAvailabilityBooking(customerId, quantity)}),
+                Version);
         }
 
         public Option<RoomAvailabilityBooking> BookingFor(Guid customerId) => 
