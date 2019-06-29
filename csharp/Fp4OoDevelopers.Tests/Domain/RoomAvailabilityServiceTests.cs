@@ -1,6 +1,7 @@
 using System;
 using Fp4OoDevelopers.Domain;
 using Fp4OoDevelopers.Functional;
+using static Fp4OoDevelopers.Functional.Syntax;
 using Fp4OoDevelopers.Infrastructure;
 using Xunit;
 
@@ -22,8 +23,9 @@ namespace Fp4OoDevelopers.Tests.Domain
         [Fact]
         public void SuccessfulBooking()
         {
-            service.Book(new BookCommand(Ids.AvailableRoom, Ids.JonSnow, 1));
+            var result = service.Book(new BookCommand(Ids.AvailableRoom, Ids.JonSnow, 1));
 
+            Assert.Equal(Right<string, Unit>(Syntax.Unit), result);
             Assert.NotNull(store.Saved);
             Assert.Equal(Ids.AvailableRoom, store.Saved.RoomId);
             Assert.Equal(9, store.Saved.Quantity);
@@ -32,8 +34,9 @@ namespace Fp4OoDevelopers.Tests.Domain
         [Fact]
         public void OptimisticLock()
         {
-            Assert.Throws<OptimisticLockException>(() =>
-                service.Book(new BookCommand(Ids.OptimisticLockRoom, Ids.JonSnow, 1)));
+            var result = service.Book(new BookCommand(Ids.OptimisticLockRoom, Ids.JonSnow, 1));
+
+            Assert.Equal("Optimistic lock", result.Match(x => x, _ => ""));
         }
 
         private class TestRoomAvailabilityStore : IRoomAvailabilityStore
