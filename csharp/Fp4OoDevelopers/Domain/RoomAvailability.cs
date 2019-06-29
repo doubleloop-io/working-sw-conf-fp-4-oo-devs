@@ -37,22 +37,7 @@ namespace Fp4OoDevelopers.Domain
         [JsonProperty]
         public int Version { get; private set; }
 
-        public Either<string, Unit> Book(Guid customerId, int quantity)
-        {
-            if (quantity > Quantity)
-            {
-                return "Not enough availability";
-            }
-            if (bookingsByCustomerId.ContainsKey(customerId))
-            {
-                return "Customer already booked this property";
-            }
-            Quantity -= quantity;
-            bookingsByCustomerId[customerId] = new RoomAvailabilityBooking(customerId, quantity);
-            return Syntax.Unit;
-        }
-
-        public Either<string, RoomAvailability> BookImmutable(Guid customerId, int quantity)
+        public Either<string, RoomAvailability> Book(Guid customerId, int quantity)
         {
             if (quantity > Quantity)
             {
