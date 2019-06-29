@@ -16,7 +16,7 @@ namespace Fp4OoDevelopers.Domain
             roomAvailabilityStore.LoadForRoom(command.RoomId)
                 .ToEither("Cannot find availability for required room")
                 .FlatMap(roomAvailability => Book(roomAvailability, command))
-                .FlatMap(roomAvailability => roomAvailabilityStore.SaveEither(roomAvailability))
+                .FlatMap(roomAvailability => roomAvailabilityStore.Save(roomAvailability))
                 .Match(error => throw new OptimisticLockException(error), x => x);
         }
 

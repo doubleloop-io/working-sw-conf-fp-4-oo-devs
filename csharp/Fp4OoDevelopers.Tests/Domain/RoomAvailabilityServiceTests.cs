@@ -46,7 +46,7 @@ namespace Fp4OoDevelopers.Tests.Domain
             {
                 store = new InMemoryRoomAvailabilityStore();
                 foreach (var availability in availabilities)
-                    store.SaveEither(availability);
+                    store.Save(availability);
             }
 
             public Option<RoomAvailability> LoadForRoom(Guid roomId)
@@ -54,19 +54,11 @@ namespace Fp4OoDevelopers.Tests.Domain
                 return store.LoadForRoom(roomId);
             }
 
-            public void Save(RoomAvailability roomAvailability)
-            {
-                if (roomAvailability.RoomId == Ids.OptimisticLockRoom)
-                    throw new OptimisticLockException(nameof(RoomAvailability), roomAvailability.Id, 2, 1);
-                store.Save(roomAvailability);
-                Saved = roomAvailability;
-            }
-
-            public Either<string, Unit> SaveEither(RoomAvailability roomAvailability)
+            public Either<string, Unit> Save(RoomAvailability roomAvailability)
             {
                 if (roomAvailability.RoomId == Ids.OptimisticLockRoom)
                     return "Optimistic lock";
-                return store.SaveEither(roomAvailability)
+                return store.Save(roomAvailability)
                     .Map(_ =>
                     {
                         Saved = roomAvailability;

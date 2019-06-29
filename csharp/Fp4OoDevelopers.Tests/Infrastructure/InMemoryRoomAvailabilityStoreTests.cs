@@ -15,7 +15,7 @@ namespace Fp4OoDevelopers.Tests.Infrastructure
             var store = new InMemoryRoomAvailabilityStore();
             var newAvailability = new RoomAvailability(Ids.AvailableRoom, 10);
 
-            var result = store.SaveEither(newAvailability)
+            var result = store.Save(newAvailability)
                 .FlatMap(_ => store.LoadForRoom(Ids.AvailableRoom).ToEither("Not found"))
                 .Map(availability =>
                 {
@@ -33,10 +33,10 @@ namespace Fp4OoDevelopers.Tests.Infrastructure
             var store = new InMemoryRoomAvailabilityStore();
             var newAvailability = new RoomAvailability(Ids.AvailableRoom, 10);
 
-            var result = store.SaveEither(newAvailability)
+            var result = store.Save(newAvailability)
                 .FlatMap(_ => store.LoadForRoom(Ids.AvailableRoom).ToEither("Not found"))
-                .FlatMap(availability => store.SaveEither(availability).Map(_ => availability))
-                .FlatMap(availability => store.SaveEither(availability))
+                .FlatMap(availability => store.Save(availability).Map(_ => availability))
+                .FlatMap(availability => store.Save(availability))
                 .Map(_ => Syntax.Unit);
 
             Assert.StartsWith("Cannot save", result.Match(x => x, _ => ""));

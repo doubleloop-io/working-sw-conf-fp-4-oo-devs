@@ -13,24 +13,7 @@ namespace Fp4OoDevelopers.Infrastructure
         public Option<RoomAvailability> LoadForRoom(Guid roomId) =>
             roomAvailabilitiesByRoomId.TryGetValue(roomId, out var ret) ? Deserialize(ret) : null;
 
-        public void Save(RoomAvailability roomAvailability)
-        {
-            var @new = Clone(roomAvailability);
-
-            IncrementVersionOf(@new);
-
-            roomAvailabilitiesByRoomId.AddOrUpdate(@new.RoomId,
-                _ => Serialize(@new),
-                (_, str) =>
-                {
-                    var current = Deserialize(str);
-                    if (current.Version >= @new.Version)
-                        ThrowOptimisticLock(@new, current);
-                    return Serialize(@new);
-                });
-        }
-
-        public Either<string, Unit> SaveEither(RoomAvailability roomAvailability)
+        public Either<string, Unit> Save(RoomAvailability roomAvailability)
         {
             var @new = Clone(roomAvailability);
             RoomAvailability current = null;
