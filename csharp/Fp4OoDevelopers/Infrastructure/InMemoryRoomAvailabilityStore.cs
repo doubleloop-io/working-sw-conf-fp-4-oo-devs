@@ -16,31 +16,27 @@ namespace Fp4OoDevelopers.Infrastructure
         public Either<string, Unit> Save(RoomAvailability roomAvailability)
         {
             var @new = Clone(roomAvailability);
-            RoomAvailability current = null;
+            var current = roomAvailability;
 
             IncrementVersionOf(@new);
 
             roomAvailabilitiesByRoomId.AddOrUpdate(@new.RoomId,
-                _ =>
-                {
-                    current = roomAvailability;
-                    return Serialize(@new);
-                },
+                _ => Serialize(@new),
                 (_, str) =>
                 {
                     current = Deserialize(str);
-                    return current.Version >= @new.Version ? str : Serialize(@new);
+                    return OptimisticLock(current, @new) ? str : Serialize(@new);
                 });
 
-            if (current.Version >= @new.Version)
+            if (OptimisticLock(current, @new))
             {
                 return $"Cannot save {nameof(RoomAvailability)}@{@new.Id} with version {@new.Version} cause current version is {current.Version}";
             }
             return Syntax.Unit;
         }
 
-        private static void ThrowOptimisticLock(RoomAvailability @new, RoomAvailability current) => 
-            throw new OptimisticLockException(nameof(RoomAvailability), @new.Id, current.Version, @new.Version);
+        private static bool OptimisticLock(RoomAvailability current, RoomAvailability @new) => 
+            current.Version >= @new.Version;
 
         private static RoomAvailability Clone(RoomAvailability roomAvailability) => Deserialize(Serialize(roomAvailability));
 
