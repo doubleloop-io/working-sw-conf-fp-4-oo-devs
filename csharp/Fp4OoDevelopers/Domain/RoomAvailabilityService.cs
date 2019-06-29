@@ -1,5 +1,3 @@
-using Fp4OoDevelopers.Functional;
-
 namespace Fp4OoDevelopers.Domain
 {
     public class RoomAvailabilityService
@@ -15,12 +13,9 @@ namespace Fp4OoDevelopers.Domain
         {
             roomAvailabilityStore.LoadForRoom(command.RoomId)
                 .ToEither("Cannot find availability for required room")
-                .FlatMap(roomAvailability => Book(roomAvailability, command))
+                .FlatMap(roomAvailability => roomAvailability.BookImmutable(command.CustomerId, command.Quantity))
                 .FlatMap(roomAvailability => roomAvailabilityStore.Save(roomAvailability))
                 .Match(error => throw new OptimisticLockException(error), x => x);
         }
-
-        private Either<string, RoomAvailability> Book(RoomAvailability roomAvailability, BookCommand command) =>
-            roomAvailability.Book(command.CustomerId, command.Quantity).Map(_ => roomAvailability);
     }
 }
